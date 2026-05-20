@@ -10,6 +10,7 @@ export const site = {
   email: "hemabhaskarms@gmail.com",
   github: "https://github.com/HemaMunagala",
   linkedin: "https://www.linkedin.com/in/hema-munagala/",
+  website: "https://hemamunagala.github.io/hema-portfolio/",
   resume: "/resume.pdf",
 };
 

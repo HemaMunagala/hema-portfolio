@@ -30,6 +30,12 @@ function BulletList({ items }: { items: string[] }) {
   );
 }
 
+export function generateStaticParams() {
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
+
 export default async function ProjectCaseStudy({
   params,
 }: {

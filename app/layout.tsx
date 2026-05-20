@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description: site.summary,
+  metadataBase: new URL(site.website),
   openGraph: {
     title: `${site.name} | ${site.title}`,
     description: site.summary,

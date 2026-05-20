@@ -18,6 +18,11 @@ const contactLinks = [
     href: site.linkedin,
   },
   {
+    label: "Website",
+    value: "hemamunagala.github.io/hema-portfolio",
+    href: site.website,
+  },
+  {
     label: "Location",
     value: `${site.location} - Open to relocation`,
   },
