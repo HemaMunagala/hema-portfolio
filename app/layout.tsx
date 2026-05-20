@@ -2,20 +2,31 @@ import type { Metadata } from "next";
 import "./globals.css";
 import SiteNav from "../components/SiteNav";
 import Footer from "../components/Footer";
+import { site } from "../lib/site";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
-    default: "Hema Munagala | Software Engineer",
-    template: "%s | Hema Munagala",
+    default: `${site.name} | ${site.title}`,
+    template: `%s | ${site.name}`,
   },
-  description:
-    "Software Engineer focused on backend automation, relational data integrity, and production-ready full-stack platforms.",
+  description: site.summary,
+  openGraph: {
+    title: `${site.name} | ${site.title}`,
+    description: site.summary,
+    siteName: site.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} | ${site.title}`,
+    description: site.summary,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+    <html lang="en">
+      <body className="page-shell antialiased">
         <SiteNav />
         {children}
         <Footer />

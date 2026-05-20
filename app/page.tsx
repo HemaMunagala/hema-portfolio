@@ -3,7 +3,7 @@ import HomeSpotlight from "../components/HomeSpotlight";
 
 export default function HomePage() {
   return (
-    <main className="bg-slate-50">
+    <main>
       <Hero />
       <HomeSpotlight />
     </main>

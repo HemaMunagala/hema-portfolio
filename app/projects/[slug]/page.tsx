@@ -1,21 +1,30 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { projects } from "../../../lib/projects";
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="mt-10">
-      <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
-      <div className="mt-3 text-slate-700 leading-relaxed">{children}</div>
-    </div>
+    <section className="rounded-[1.75rem] border border-white/75 bg-white/80 p-6 sm:p-7">
+      <h2 className="section-heading text-3xl text-slate-950">{title}</h2>
+      <div className="mt-4 text-sm leading-7 text-slate-700">{children}</div>
+    </section>
   );
 }
 
 function BulletList({ items }: { items: string[] }) {
   return (
-    <ul className="list-disc space-y-2 pl-5">
-      {items.map((x) => (
-        <li key={x}>{x}</li>
+    <ul className="space-y-3">
+      {items.map((item) => (
+        <li key={item} className="flex gap-3">
+          <span className="mt-2 h-2 w-2 rounded-full bg-teal-700" />
+          <span>{item}</span>
+        </li>
       ))}
     </ul>
   );
@@ -27,74 +36,75 @@ export default async function ProjectCaseStudy({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const project = projects.find((entry) => entry.slug === slug);
 
-  const project = projects.find((p) => p.slug === slug);
-  if (!project) return notFound();
-
-  const cs = project.caseStudy;
+  if (!project) {
+    return notFound();
+  }
 
   return (
-    <main className="bg-slate-50">
-      <section className="mx-auto max-w-4xl px-6 py-16">
-        <Link href="/projects" className="text-sm text-slate-600">
-          ← Back to Projects
-        </Link>
+    <main className="px-6 pb-12 pt-10 sm:pt-14">
+      <div className="mx-auto grid max-w-5xl gap-8">
+        <section className="section-card rounded-[2rem] px-7 py-8 sm:px-10 sm:py-10">
+          <Link href="/projects" className="accent-link text-sm text-slate-600">
+            Back to Projects
+          </Link>
 
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900">
-          {project.name}
-        </h1>
-
-        <p className="mt-4 text-base leading-relaxed text-slate-600">
-          {project.oneLiner}
-        </p>
-
-        <Section title="Tech Stack">
-          <div className="flex flex-wrap gap-2">
-            {project.stack.map((t) => (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {project.stack.map((tech) => (
               <span
-                key={t}
-                className="rounded-lg bg-white px-3 py-1 text-sm text-slate-700 border border-slate-200"
+                key={tech}
+                className="rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-teal-900"
               >
-                {t}
+                {tech}
               </span>
             ))}
           </div>
-        </Section>
 
-        {cs ? (
-          <>
+          <h1 className="section-heading mt-6 text-5xl leading-tight text-slate-950">
+            {project.name}
+          </h1>
+          <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
+            {project.oneLiner}
+          </p>
+        </section>
+
+        {project.caseStudy ? (
+          <div className="section-card grid gap-5 rounded-[2rem] p-5 sm:p-6">
             <Section title="Problem">
-              <p>{cs.problem}</p>
+              <p>{project.caseStudy.problem}</p>
             </Section>
 
-            <Section title="My Role">
-              <p>{cs.role}</p>
+            <Section title="Role">
+              <p>{project.caseStudy.role}</p>
             </Section>
 
             <Section title="Architecture">
-              <BulletList items={cs.architecture} />
+              <BulletList items={project.caseStudy.architecture} />
             </Section>
 
             <Section title="Key Work">
-              <BulletList items={cs.keyWork} />
+              <BulletList items={project.caseStudy.keyWork} />
             </Section>
 
             <Section title="Impact">
-              <BulletList items={cs.impact} />
+              <BulletList items={project.caseStudy.impact} />
             </Section>
-            <Section title="Screenshots & Notes">
-                <div className="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
-                    Add screenshots (UI, workflow, diagrams) and any measurable outcomes here.
-                    We’ll fill this per project next.
-                </div>
-            </Section>
-          </>
-        ) : (
-          <div className="mt-12 rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
-            Detailed case study coming soon.
           </div>
+        ) : (
+          <section className="section-card rounded-[2rem] px-7 py-8 sm:px-10">
+            <h2 className="section-heading text-3xl text-slate-950">Project Overview</h2>
+            <p className="mt-4 text-sm leading-7 text-slate-700">
+              This project is included to show technical breadth. A deeper written case study
+              can be added later with screenshots, architecture notes, or implementation tradeoffs.
+            </p>
+
+            <div className="mt-6">
+              <BulletList items={project.highlights} />
+            </div>
+          </section>
         )}
-      </section>
+      </div>
     </main>
   );
 }
